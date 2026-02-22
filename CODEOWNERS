@@ -1,0 +1,8 @@
+# Global default owner for governance artifacts.
+* @imnotakopp
+
+# Governance and automation paths.
+/.github/ @imnotakopp
+/README.md @imnotakopp
+/CONTRIBUTING.md @imnotakopp
+/SECURITY.md @imnotakopp
