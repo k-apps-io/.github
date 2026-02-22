@@ -26,6 +26,7 @@ This repository defines organization-level GitHub governance defaults for `@k-ap
 - `CODEOWNERS`: review ownership for governance artifacts.
 - `CONTRIBUTING.md`: standards for contributing changes.
 - `SECURITY.md`: process for reporting and handling vulnerabilities.
+- `docs/governance/`: canonical governance policies, including issue label lifecycle rules.
 - `.github/ISSUE_TEMPLATE/`: baseline issue templates.
 - `.github/pull_request_template.md`: default PR checklist.
 - `.github/workflows/`: CI workflows for markdown and link validation.
