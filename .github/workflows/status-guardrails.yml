@@ -1,0 +1,36 @@
+name: Status Guardrails
+
+on:
+  issues:
+    types:
+      - opened
+      - reopened
+      - labeled
+      - unlabeled
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: status-guardrails-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  enforce:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      MAINTAINER_BYPASS: "true"
+      POLICY_URL: https://github.com/${{ github.repository }}/blob/main/docs/governance/issue-label-policy.md
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify tooling
+        run: |
+          command -v gh
+          command -v jq
+
+      - name: Enforce status guardrails
+        run: .github/scripts/status-guardrails.sh
