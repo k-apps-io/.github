@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "labels": [
+    {
+      "name": "status/backlog",
+      "color": "C5DEF5",
+      "description": "Planned work not started."
+    },
+    {
+      "name": "status/in-progress",
+      "color": "FBCA04",
+      "description": "Actively being executed."
+    },
+    {
+      "name": "status/review",
+      "color": "0E8A16",
+      "description": "Implementation complete and under review."
+    },
+    {
+      "name": "status/blocked",
+      "color": "B60205",
+      "description": "Cannot proceed due to an external dependency."
+    },
+    {
+      "name": "status/done",
+      "color": "1D76DB",
+      "description": "Completed and accepted."
+    },
+    {
+      "name": "priority/p0",
+      "color": "7A0000",
+      "description": "Critical work requiring immediate attention."
+    },
+    {
+      "name": "priority/p1",
+      "color": "B60205",
+      "description": "High priority for current milestone."
+    },
+    {
+      "name": "priority/p2",
+      "color": "D93F0B",
+      "description": "Medium priority after prerequisites."
+    },
+    {
+      "name": "priority/p3",
+      "color": "FBCA04",
+      "description": "Lower priority and deferrable."
+    },
+    {
+      "name": "type/bug",
+      "color": "D73A4A",
+      "description": "Defect affecting expected behavior."
+    },
+    {
+      "name": "type/feature",
+      "color": "A2EEEF",
+      "description": "New product or platform capability."
+    },
+    {
+      "name": "type/ops",
+      "color": "0E8A16",
+      "description": "Operational, governance, or maintenance work."
+    },
+    {
+      "name": "type/initiative",
+      "color": "1D76DB",
+      "description": "Multi-repo or program-level work."
+    },
+    {
+      "name": "work/governance",
+      "color": "5319E7",
+      "description": "Governance standards and controls."
+    },
+    {
+      "name": "work/automation",
+      "color": "0052CC",
+      "description": "Workflows and repository automation."
+    },
+    {
+      "name": "work/docs",
+      "color": "0075CA",
+      "description": "Documentation deliverables and maintenance."
+    }
+  ]
+}

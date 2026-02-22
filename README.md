@@ -27,6 +27,8 @@ This repository defines organization-level GitHub governance defaults for `@k-ap
 - `CONTRIBUTING.md`: standards for contributing changes.
 - `SECURITY.md`: process for reporting and handling vulnerabilities.
 - `docs/governance/`: canonical governance policies, including issue label lifecycle rules.
+- `.github/labels/`: machine-readable label catalog and default target repository list.
+- `.github/scripts/label-sync.sh`: label drift detection and sync runner.
 - `.github/ISSUE_TEMPLATE/`: baseline issue templates.
 - `.github/pull_request_template.md`: default PR checklist.
 - `.github/workflows/`: CI workflows for markdown and link validation.

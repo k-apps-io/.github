@@ -1,0 +1,54 @@
+name: Label Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "If true, report-only mode without mutating labels."
+        required: true
+        type: boolean
+        default: true
+      repos:
+        description: "Optional comma-separated owner/name repos. Empty uses target-repos.txt."
+        required: false
+        type: string
+  schedule:
+    - cron: "0 13 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    name: Sync labels and publish drift report
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.ORG_LABEL_SYNC_TOKEN != '' && secrets.ORG_LABEL_SYNC_TOKEN || github.token }}
+      DRY_RUN: ${{ github.event_name == 'schedule' && 'true' || inputs.dry_run }}
+      REPOS_OVERRIDE: ${{ inputs.repos }}
+      CATALOG_PATH: .github/labels/catalog.json
+      REPO_LIST_PATH: .github/labels/target-repos.txt
+      REPORT_PATH: artifacts/label-sync-report.md
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify tooling
+        run: |
+          command -v gh
+          command -v jq
+
+      - name: Run label sync
+        run: .github/scripts/label-sync.sh
+
+      - name: Upload drift report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: label-sync-report-${{ github.run_id }}
+          path: artifacts/label-sync-report.md
+          if-no-files-found: error
+
+      - name: Publish summary
+        if: always()
+        run: cat artifacts/label-sync-report.md >> "$GITHUB_STEP_SUMMARY"
