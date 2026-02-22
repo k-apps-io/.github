@@ -1,0 +1,58 @@
+name: Feature request
+description: Propose and plan new product/platform capability
+title: "[Feature] "
+labels:
+  - type/feature
+  - status/backlog
+  - priority/p2
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: One-line statement of the feature.
+      placeholder: Describe the feature.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What problem is this solving?
+    validations:
+      required: true
+  - type: textarea
+    id: goals
+    attributes:
+      label: Goals and non-goals
+      placeholder: |
+        Goals:
+        - ...
+        Non-goals:
+        - ...
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Functional scope, dependencies, and constraints.
+    validations:
+      required: true
+  - type: textarea
+    id: rollout
+    attributes:
+      label: Rollout and risk
+      description: Rollout plan, risk level, and rollback strategy.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+

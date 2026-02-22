@@ -31,6 +31,7 @@ This repository defines organization-level GitHub governance defaults for `@k-ap
 - `.github/scripts/label-sync.sh`: label drift detection and sync runner.
 - `.github/scripts/status-guardrails.sh`: status transition and conflict enforcement.
 - `docs/governance/org-rollout-plan.md`: rollout waves, owners, metrics, and timelines.
+- `docs/governance/template-adoption-and-overrides.md`: template precedence and override rules.
 - `.github/ISSUE_TEMPLATE/`: baseline issue templates.
 - `.github/pull_request_template.md`: default PR checklist.
 - `.github/workflows/`: CI workflows for markdown and link validation.
