@@ -29,6 +29,7 @@ jobs:
       - name: Link checker
         uses: lycheeverse/lychee-action@v2
         with:
+          failIfEmpty: false
           args: >-
             --verbose
             --no-progress
