@@ -33,5 +33,5 @@ jobs:
             --verbose
             --no-progress
             --accept 200,201,202,204,429
-            --exclude-mail
+            --exclude '^mailto:'
             '**/*.md'
