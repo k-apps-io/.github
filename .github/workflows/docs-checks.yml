@@ -29,9 +29,10 @@ jobs:
       - name: Link checker
         uses: lycheeverse/lychee-action@v2
         with:
+          failIfEmpty: false
           args: >-
             --verbose
             --no-progress
             --accept 200,201,202,204,429
-            --exclude-mail
-            '**/*.md'
+            --exclude '^mailto:'
+            .
