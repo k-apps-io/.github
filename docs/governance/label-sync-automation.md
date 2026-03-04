@@ -11,7 +11,8 @@ This document defines how label synchronization is executed and safely operated.
 ## Source of Truth
 
 - Label catalog: `.github/labels/catalog.json`
-- Default target repositories: `.github/labels/target-repos.txt`
+- Auto-bootstrap target source of truth: org auto-discovery (`AUTO_DISCOVER_REPOS=true` + `ORG_NAME`)
+- Static fallback target list (compat/manual): `.github/labels/target-repos.txt`
 - Workflow: `.github/workflows/label-sync.yml`
 - Auto-bootstrap workflow: `.github/workflows/repo-governance-bootstrap.yml`
 - Sync script: `.github/scripts/label-sync.sh`
@@ -25,7 +26,7 @@ This document defines how label synchronization is executed and safely operated.
   - `dry_run=false` to apply create/update changes
 - Optional repo override:
   - Use comma-separated `owner/name` values in dispatch input `repos`
-  - Leave empty to use `target-repos.txt`
+  - In `label-sync.yml`, leave empty to use `target-repos.txt`
   - For auto-bootstrap workflow, leaving `repos` empty uses org auto-discovery.
 
 ## Auto-Discovery Inputs

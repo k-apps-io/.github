@@ -1,5 +1,8 @@
 # One repository per line in owner/name format.
 # Lines beginning with # are ignored.
+# This file is a static fallback/input for label-sync.yml and manual scoped runs.
+# The repo-governance-bootstrap workflow uses org auto-discovery as the primary
+# source of truth for newly created repositories.
 k-apps-io/.github
 k-apps-io/P3webprototype
 k-apps-io/P3Prototype-api
