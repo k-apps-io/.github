@@ -13,17 +13,30 @@ This document defines how label synchronization is executed and safely operated.
 - Label catalog: `.github/labels/catalog.json`
 - Default target repositories: `.github/labels/target-repos.txt`
 - Workflow: `.github/workflows/label-sync.yml`
+- Auto-bootstrap workflow: `.github/workflows/repo-governance-bootstrap.yml`
 - Sync script: `.github/scripts/label-sync.sh`
 
 ## Execution Modes
 
 - Scheduled run (weekly): always dry-run.
+- Auto-bootstrap scheduled run (every 6 hours): apply mode with org repo auto-discovery.
 - Manual run (`workflow_dispatch`):
   - `dry_run=true` for audit-only reporting
   - `dry_run=false` to apply create/update changes
 - Optional repo override:
   - Use comma-separated `owner/name` values in dispatch input `repos`
   - Leave empty to use `target-repos.txt`
+  - For auto-bootstrap workflow, leaving `repos` empty uses org auto-discovery.
+
+## Auto-Discovery Inputs
+
+The sync script supports org-level discovery when:
+
+- `AUTO_DISCOVER_REPOS=true`
+- `ORG_NAME=<org-login>`
+- optional: `ORG_REPO_LIMIT` (default `200`)
+
+Auto-discovery includes repositories that have a default branch and excludes archived repositories.
 
 ## Required Token and Permissions
 
