@@ -69,7 +69,7 @@ elif [[ "$(bool_lower "$AUTO_DISCOVER_REPOS")" == "true" ]]; then
     [[ -n "$repo" ]] && repos+=("$repo")
   done < <(
     gh repo list "$ORG_NAME" --limit "$ORG_REPO_LIMIT" --json nameWithOwner,defaultBranchRef,isArchived \
-      --jq '.[] | select(.isArchived | not) | select(.defaultBranchRef.name != null and .defaultBranchRef.name != "") | .nameWithOwner'
+      --jq '.[] | select(.isArchived | not) | select(.defaultBranchRef and .defaultBranchRef.name != "") | .nameWithOwner'
   )
 else
   while IFS= read -r line || [[ -n "$line" ]]; do
