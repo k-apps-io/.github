@@ -4,6 +4,9 @@ set -euo pipefail
 CATALOG_PATH="${CATALOG_PATH:-.github/labels/catalog.json}"
 REPO_LIST_PATH="${REPO_LIST_PATH:-.github/labels/target-repos.txt}"
 REPOS_OVERRIDE="${REPOS_OVERRIDE:-}"
+AUTO_DISCOVER_REPOS="${AUTO_DISCOVER_REPOS:-false}"
+ORG_NAME="${ORG_NAME:-}"
+ORG_REPO_LIMIT="${ORG_REPO_LIMIT:-200}"
 DRY_RUN="${DRY_RUN:-true}"
 REPORT_PATH="${REPORT_PATH:-artifacts/label-sync-report.md}"
 
@@ -34,7 +37,7 @@ if [[ ! -f "$CATALOG_PATH" ]]; then
   exit 1
 fi
 
-if [[ ! -f "$REPO_LIST_PATH" && -z "$REPOS_OVERRIDE" ]]; then
+if [[ "$(bool_lower "$AUTO_DISCOVER_REPOS")" != "true" && ! -f "$REPO_LIST_PATH" && -z "$REPOS_OVERRIDE" ]]; then
   echo "Repo list file not found: $REPO_LIST_PATH" >&2
   exit 1
 fi
@@ -55,6 +58,19 @@ if [[ -n "$REPOS_OVERRIDE" ]]; then
     repo="$(trim "$repo")"
     [[ -n "$repo" ]] && repos+=("$repo")
   done
+elif [[ "$(bool_lower "$AUTO_DISCOVER_REPOS")" == "true" ]]; then
+  if [[ -z "$ORG_NAME" ]]; then
+    echo "ORG_NAME is required when AUTO_DISCOVER_REPOS=true." >&2
+    exit 1
+  fi
+
+  while IFS= read -r repo || [[ -n "$repo" ]]; do
+    repo="$(trim "$repo")"
+    [[ -n "$repo" ]] && repos+=("$repo")
+  done < <(
+    gh repo list "$ORG_NAME" --limit "$ORG_REPO_LIMIT" --json nameWithOwner,defaultBranchRef,isArchived \
+      --jq '.[] | select(.isArchived | not) | select(.defaultBranchRef and .defaultBranchRef.name != "") | .nameWithOwner'
+  )
 else
   while IFS= read -r line || [[ -n "$line" ]]; do
     line="$(trim "$line")"
@@ -167,4 +183,3 @@ done
 } >>"$REPORT_PATH"
 
 echo "Report written to $REPORT_PATH"
-

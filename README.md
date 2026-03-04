@@ -29,6 +29,7 @@ This repository defines organization-level GitHub governance defaults for `@k-ap
 - `docs/governance/`: canonical governance policies, including issue label lifecycle rules.
 - `.github/labels/`: machine-readable label catalog and default target repository list.
 - `.github/scripts/label-sync.sh`: label drift detection and sync runner.
+- `.github/workflows/repo-governance-bootstrap.yml`: scheduled org repo auto-discovery and governance label bootstrap.
 - `.github/scripts/status-guardrails.sh`: status transition and conflict enforcement.
 - `docs/governance/org-rollout-plan.md`: rollout waves, owners, metrics, and timelines.
 - `docs/governance/template-adoption-and-overrides.md`: template precedence and override rules.
