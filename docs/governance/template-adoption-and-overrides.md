@@ -41,7 +41,7 @@ For repositories that should inherit org defaults:
 Allowed override pattern:
 
 1. Copy the org default file into the target repo:
-   - from `k-apps-io/.github` repo: `.github/ISSUE_TEMPLATE/bug.yml` ->
+   - `k-apps-io/.github/.github/ISSUE_TEMPLATE/bug.yml` ->
      `<target-repo>/.github/ISSUE_TEMPLATE/bug.yml`
 2. Keep the canonical labels in defaults:
    - `type/*`, `status/backlog`, and `priority/*`
