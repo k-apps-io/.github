@@ -54,6 +54,15 @@ Exactly one `type/*` label must be present.
 | `work/automation` | `0052CC` | Workflows and repository automation. |
 | `work/docs` | `0075CA` | Documentation deliverables and maintenance. |
 
+### Integration labels (optional)
+
+These labels support platform tooling that expects exact names.
+
+| Label | Color | Description |
+| --- | --- | --- |
+| `dependabot` | `1F6FEB` | Automated dependency update pull requests from Dependabot. |
+| `dependencies` | `0366D6` | Changes to project dependencies or dependency tooling. |
+
 ## Selection Rules
 
 - `status/*`: single-select, required.
