@@ -80,6 +80,16 @@
       "name": "work/docs",
       "color": "0075CA",
       "description": "Documentation deliverables and maintenance."
+    },
+    {
+      "name": "dependabot",
+      "color": "1F6FEB",
+      "description": "Automated dependency update pull requests from Dependabot."
+    },
+    {
+      "name": "dependencies",
+      "color": "0366D6",
+      "description": "Changes to project dependencies or dependency tooling."
     }
   ]
 }
