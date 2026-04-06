@@ -24,13 +24,18 @@ k-apps-io/mongoose
 k-apps-io/ok-agent
 k-apps-io/ok-agent-openai-code
 k-apps-io/ok-agent-openai-ts
+k-apps-io/ok-agent-orin
+k-apps-io/ok-agent-template-py
 k-apps-io/ok-agent-template-ts
 k-apps-io/ok-agent-ts
 k-apps-io/ok-api
 k-apps-io/ok-cli
 k-apps-io/ok-codex
+k-apps-io/ok-codex-dev
+k-apps-io/ok-codex-pr
 k-apps-io/ok-deploy
 k-apps-io/ok-ecs-node
+k-apps-io/ok-github
 k-apps-io/ok-model
 k-apps-io/openfoodfacts-nodejs
 k-apps-io/p3-admin-api
@@ -53,3 +58,4 @@ k-apps-io/template-mobile
 k-apps-io/template-mongo
 k-apps-io/template-typescript-package
 k-apps-io/template-web
+k-apps-io/terraform-modules
