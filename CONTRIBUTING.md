@@ -21,6 +21,12 @@ Thanks for helping maintain governance standards for `@k-apps-io`.
 - Keep examples actionable and repository-agnostic unless explicitly scoped.
 - Preserve backward compatibility where possible for org-wide defaults.
 
+## Ownership and Escalation
+
+- **Owner:** @imnotakopp is the designated owner of the organization's contribution and governance standards.
+- **Questions and escalations:** Mention @imnotakopp in the relevant issue or pull request when clarification, a policy decision, an exception, or escalation is required.
+- Do not make unilateral decisions on unresolved governance questions; document the concern and mention @imnotakopp for direction.
+
 ## Out of Scope
 
 - Repo-specific implementation details that belong in individual repositories.
