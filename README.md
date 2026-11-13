@@ -10,6 +10,7 @@ This repository defines organization-level GitHub governance defaults for `@k-ap
 
 ## Ownership Model
 
+- Governance owner and escalation process: [Ownership and Escalation](CONTRIBUTING.md#ownership-and-escalation).
 - Primary maintainers: platform/governance maintainers listed in `CODEOWNERS`.
 - Governance changes require review from code owners.
 - Security-sensitive updates follow `SECURITY.md`.
