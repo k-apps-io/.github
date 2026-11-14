@@ -113,3 +113,17 @@ class CliTests(unittest.TestCase):
         self.factory.side_effect = ValueError("Missing token")
         self.assertEqual(self.run_cli()[0], 1)
         self.assertIn("FAILED", next(self.output.glob("*/report.md")).read_text())
+
+    def test_detached_stdin_rejects_unconfirmed_writes(self):
+        with patch("sys.stdin", None):
+            self.assertEqual(cli.main(self.base + ["--dry-run", "false"]), 1)
+        self.factory.assert_not_called()
+
+    def test_filesystem_failures_return_nonzero(self):
+        for operation in ["mkdir", "write_text"]:
+            with (
+                self.subTest(operation=operation),
+                patch.object(Path, operation, side_effect=PermissionError("read-only output")),
+            ):
+                self.assertEqual(cli.main(self.base + ["--validate-only"]), 1)
+        self.factory.assert_not_called()

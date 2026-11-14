@@ -33,14 +33,14 @@ def main(argv: list[str] | None = None) -> int:
     dry_run = args.dry_run == "true"
     # Isolate each invocation so rollback snapshots cannot be overwritten by later runs.
     output = args.output / datetime.now(UTC).strftime("%Y%m%dT%H%M%S.%fZ")
-    output.mkdir(parents=True, exist_ok=False)
     try:
-        config = json.loads(args.config.read_text())
+        output.mkdir(parents=True, exist_ok=False)
+        config = json.loads(args.config.read_text(encoding="utf-8"))
         validate(config)
         if args.validate_only:
             message = "Configuration valid; no API requests performed."
         else:
-            if not dry_run and not args.yes and not sys.stdin.isatty():
+            if not dry_run and not args.yes and not (sys.stdin is not None and sys.stdin.isatty()):
                 raise ValueError("Noninteractive writes require --dry-run false --yes")
 
             def confirm(diff: str) -> bool:
@@ -76,7 +76,11 @@ def main(argv: list[str] | None = None) -> int:
         message = f"FAILED: {error}"
         status = 1
     report = f"# Ruleset sync\n\n- Mode: {'dry-run' if dry_run else 'apply'}\n- Client: GitHubKit\n\n{message}\n"
-    (output / "report.md").write_text(report)
     print(message)
+    try:
+        (output / "report.md").write_text(report, encoding="utf-8")
+    except OSError as error:
+        print(f"FAILED: Could not write report: {error}", file=sys.stderr)
+        return 1
     print(f"Report: {output / 'report.md'}")
     return status

@@ -131,14 +131,14 @@ def reconcile(
         raise ValueError("Pinned ruleset is missing or renamed; refusing to create a replacement")
     current = repos.get_org_ruleset(ORG, ruleset_id).json() if ruleset_id is not None else None
     output.mkdir(parents=True, exist_ok=True)
-    (output / "before.json").write_text(json.dumps(current, indent=2) + "\n")
-    (output / "desired.json").write_text(json.dumps(config, indent=2) + "\n")
+    (output / "before.json").write_text(json.dumps(current, indent=2) + "\n", encoding="utf-8")
+    (output / "desired.json").write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
     before = (
         json.dumps(canonical(current) if current else {}, indent=2, sort_keys=True) + "\n"
     ).splitlines(True)
     after = (json.dumps(canonical(config), indent=2, sort_keys=True) + "\n").splitlines(True)
     diff = "".join(difflib.unified_diff(before, after, fromfile="current", tofile="desired"))
-    (output / "drift.diff").write_text(diff)
+    (output / "drift.diff").write_text(diff, encoding="utf-8")
     if not diff:
         return "No drift; no writes performed."
     if dry_run:
@@ -173,7 +173,7 @@ def reconcile(
         result = repos.create_org_ruleset(
             ORG, data=cast(OrgsOrgRulesetsPostBodyType, config)
         ).json()
-    (output / "applied.json").write_text(json.dumps(result, indent=2) + "\n")
+    (output / "applied.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     actual = repos.get_org_ruleset(ORG, result["id"]).json()
     if canonical(actual) != canonical(config):
         raise RuntimeError(
