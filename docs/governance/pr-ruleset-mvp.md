@@ -31,7 +31,7 @@ Read-only API inspection on November 14, 2026 found:
 | Merge methods | Squash, merge commit, and rebase enabled on both |
 | `ok-agent-ts` workflows | CI, Dependabot Auto Merge, Dependabot Updates |
 | `ok-agent-openai-ts` workflows | CodeQL, Quality, Test |
-| Organization inventory | Initially unavailable: CLI lacked `admin:org`; must complete before activation |
+| Organization inventory | After scope refresh, organization ruleset listing was empty before activation |
 
 Empty repository listings do not establish a complete organization-wide audit. Organization rulesets and classic branch protection can layer; inspect all applicable protections before activation. Reviewer capacity and check contexts need no enforcement decisions in this MVP because neither is required.
 
@@ -87,14 +87,14 @@ Before enabling scheduled operation, configure the dedicated secret and pinned r
 
 Do not mark enforcement verified based only on a successful API write.
 
-- [ ] Audit existing organization rulesets and effective rules for both pilot default branches.
-- [ ] Save pre-change snapshots and the approved dry-run diff.
-- [ ] Activate the ruleset and record its ID and apply artifact.
-- [ ] Verify effective rules include PR, deletion, and non-fast-forward protections on both branches.
+- [x] Audit existing organization rulesets and effective rules for both pilot default branches.
+- [x] Save pre-change snapshots and the approved dry-run diff.
+- [x] Activate the ruleset and record its ID and apply artifact.
+- [x] Verify effective rules include PR, deletion, and non-fast-forward protections on both branches.
 - [ ] Verify an ordinary contributor's direct push is rejected.
 - [ ] Verify force push and branch deletion are rejected using an approved disposable test setup. Do not test potentially destructive operations against live `main` without a recovery plan.
 - [ ] Verify a legitimate PR authored by @imnotakopp merges with zero approvals.
-- [ ] Run apply again and confirm zero updates.
+- [x] Run apply again and confirm zero updates.
 - [ ] Verify rollback and restoration in the approved test setup.
 - [ ] Record evidence and remaining limitations in the implementation PR.
 
@@ -107,3 +107,13 @@ Preserve `before.json` and the applied ID before further changes. For an existin
 For first installation (`before.json` is null), create a copy of the canonical configuration with `enforcement` set to `disabled`, then run the reconciler with that config, the pinned ID, and `--apply`. This disables only the new managed ruleset without deleting it. Run the default configuration to restore active enforcement after resolving the problem.
 
 Rollback changes protection and must be directed by the owner. Confirm the intended ID and snapshot before execution. Scheduled runs only report drift and will not undo a rollback.
+
+## Activation evidence
+
+On November 14, 2026, ruleset `27263218` was activated and its API read-back verified. Both pilot `main` effective-rules endpoints returned deletion, non-fast-forward, and zero-approval pull-request requirements from that organization ruleset. A repeated apply reported `No drift; no writes performed.` Repository variable `ORG_PR_BASELINE_RULESET_ID` is set to `27263218`.
+
+GitHub initially added `required_reviewers: []` and `require_extra_approval_for_unattributed_changes: true` to the response. Verification correctly detected the mismatch. The canonical configuration now explicitly specifies no required reviewers and disables the extra approval option; the subsequent apply and read-back matched exactly.
+
+Local artifacts are under `artifacts/ruleset-mvp-preflight`, `artifacts/ruleset-mvp-activation`, `artifacts/ruleset-mvp-explicit-defaults`, and `artifacts/ruleset-mvp-idempotence` (git-ignored). The initial snapshot was null because no managed ruleset existed. These local artifacts are not uploaded by this operation.
+
+Live push rejection, author-PR merge, and rollback exercises remain unperformed. The dedicated Actions secret must still be provisioned; local CLI authorization does not provision an Actions credential. The workflow must be merged before scheduled drift reporting is operational.

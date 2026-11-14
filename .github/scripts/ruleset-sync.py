@@ -43,6 +43,7 @@ def validate(config):
             "dismiss_stale_reviews_on_push": False, "require_code_owner_review": False,
             "require_last_push_approval": False, "required_approving_review_count": 0,
             "required_review_thread_resolution": False,
+            "required_reviewers": [], "require_extra_approval_for_unattributed_changes": False,
         }},
     ]
     if json.dumps(canonical({"rules": config["rules"]}), sort_keys=True) != json.dumps(canonical({"rules": expected_rules}), sort_keys=True):
