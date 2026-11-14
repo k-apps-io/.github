@@ -116,7 +116,7 @@ GitHub initially added `required_reviewers: []` and `require_extra_approval_for_
 
 Local artifacts are under `artifacts/ruleset-mvp-preflight`, `artifacts/ruleset-mvp-activation`, `artifacts/ruleset-mvp-explicit-defaults`, and `artifacts/ruleset-mvp-idempotence` (git-ignored). The initial snapshot was null because no managed ruleset existed. These local artifacts are not uploaded by this operation.
 
-Behavioral verification was subsequently completed in the disposable setup below. Ordinary-contributor identity testing remains unperformed; tests used the administrator identity without bypass. The dedicated Actions secret must still be provisioned; local CLI authorization does not provision an Actions credential. The workflow must be merged before scheduled drift reporting is operational.
+Behavioral verification was subsequently completed in the disposable setup below. Ordinary-contributor identity testing remains unperformed; tests used the administrator identity without bypass. The dedicated Actions secret was confirmed present on November 14, 2026; its value still requires workflow validation after merge. The workflow must be merged before scheduled drift reporting is operational.
 
 ## Disposable behavioral verification
 
@@ -136,3 +136,7 @@ Default-branch deletion is independently rejected by GitHub. To isolate the rule
 The temporary organization ruleset was deleted after testing. Test-repository deletion was attempted but rejected because the local OAuth token lacks `delete_repo`. The owner must delete `k-apps-io/ruleset-mvp-test-24` through repository Settings, or grant that CLI scope for cleanup. No additional scope was requested automatically.
 
 The sanitized API evidence is committed in [the behavioral verification record](pr-ruleset-mvp-evidence.json). This verification does not establish broad organization coverage or automatic coverage for newly named repositories.
+
+## Credential maintenance
+
+Follow the [token rotation runbook](ruleset-token-rotation.md). The first rotation is due September 1, 2027 in [issue #27](https://github.com/k-apps-io/.github/issues/27).
