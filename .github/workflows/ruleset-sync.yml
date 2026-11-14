@@ -1,0 +1,52 @@
+name: Ruleset Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Explicitly apply the reviewed MVP configuration"
+        type: boolean
+        default: false
+        required: true
+  schedule:
+    - cron: "30 13 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: organization-ruleset-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.ORG_RULESET_SYNC_TOKEN }}
+      RULESET_ID: ${{ vars.ORG_PR_BASELINE_RULESET_ID }}
+      APPLY: ${{ github.event_name == 'workflow_dispatch' && inputs.apply && github.ref == 'refs/heads/main' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconcile ruleset
+        shell: bash
+        run: |
+          mkdir -p artifacts/ruleset-sync
+          if [[ -z "$GH_TOKEN" ]]; then
+            echo 'FAILED: configure ORG_RULESET_SYNC_TOKEN with organization Administration write permission.' | tee artifacts/ruleset-sync/report.md
+            exit 1
+          fi
+          args=()
+          if [[ -n "$RULESET_ID" ]]; then args+=(--ruleset-id "$RULESET_ID"); fi
+          if [[ "$APPLY" == "true" ]]; then args+=(--apply); fi
+          python3 .github/scripts/ruleset-sync.py "${args[@]}"
+      - name: Upload report and snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ruleset-sync-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/ruleset-sync/
+          if-no-files-found: error
+      - name: Publish summary
+        if: always()
+        run: cat artifacts/ruleset-sync/report.md >> "$GITHUB_STEP_SUMMARY"
