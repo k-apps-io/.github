@@ -1,0 +1,23 @@
+name: Governance Checks
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.13.8"
+      - run: uv sync --locked
+      - run: uv run --locked ruff check .
+      - run: uv run --locked ruff format --check .
+      - run: uv run --locked mypy
+      - run: uv run --locked governance rulesets sync --validate-only
+      - run: uv run --locked python -m unittest discover -s tests -v
