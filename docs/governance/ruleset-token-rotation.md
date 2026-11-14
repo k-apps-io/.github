@@ -27,7 +27,7 @@ See [GitHub organization rules API permissions](https://docs.github.com/en/rest/
 
 1. Open GitHub Settings, Developer settings, Personal access tokens, Fine-grained tokens. Identify the current dedicated token and confirm its exact expiration.
 2. Create a replacement with the permissions above. Complete organization approval if required. Keep the old token valid until verification succeeds, unless it has been compromised.
-3. Copy the replacement value directly into the existing `ORG_RULESET_SYNC_TOKEN` secret at [repository Actions secrets](https://github.com/k-apps-io/.github/settings/secrets/actions). Use **Update**, keeping the same secret name. Do not put token values in issues, PRs, shell arguments, logs, or this document.
+3. Copy the replacement value directly into the existing `ORG_RULESET_SYNC_TOKEN` secret under the repository’s **Settings → Secrets and variables → Actions**. Use **Update**, keeping the same secret name. Do not put token values in issues, PRs, shell arguments, logs, or this document.
 4. Alternatively, use the CLI's interactive secret prompt; paste the value only into the prompt:
 
    ```bash
