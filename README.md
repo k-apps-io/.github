@@ -37,7 +37,3 @@ This repository defines organization-level GitHub governance defaults for `@k-ap
 - `.github/ISSUE_TEMPLATE/`: baseline issue templates.
 - `.github/pull_request_template.md`: default PR checklist.
 - `.github/workflows/`: CI workflows for markdown and link validation.
-
-## PR enforcement
-
-See the [PR Ruleset MVP](docs/governance/pr-ruleset-mvp.md) for the two-repository pilot, configuration, dry-run/apply commands, and rollout checklist.
