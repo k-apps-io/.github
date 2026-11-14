@@ -1,0 +1,69 @@
+name: Ruleset Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Report only; select false explicitly to apply configuration"
+        type: boolean
+        default: true
+        required: true
+  schedule:
+    - cron: "30 13 1 * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: organization-ruleset-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.13.8"
+      - name: Install locked environment
+        run: uv sync --locked --no-dev
+      - name: Reconcile ruleset
+        env:
+          GH_TOKEN: ${{ secrets.ORG_RULESET_SYNC_TOKEN }}
+          RULESET_ID: ${{ vars.ORG_PR_BASELINE_RULESET_ID }}
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+        shell: bash
+        run: |
+          mkdir -p artifacts/ruleset-sync
+          if [[ -z "$GH_TOKEN" || -z "$RULESET_ID" ]]; then
+            echo 'FAILED: configure ORG_RULESET_SYNC_TOKEN and ORG_PR_BASELINE_RULESET_ID.' | tee artifacts/ruleset-sync/setup-report.md
+            exit 1
+          fi
+          dry_run=true
+          if [[ "$EVENT_NAME" == "schedule" ]]; then
+            dry_run=false
+          elif [[ "$INPUT_DRY_RUN" == "false" ]]; then
+            dry_run=false
+          fi
+          uv run --locked --no-dev governance rulesets sync \
+            --ruleset-id "$RULESET_ID" --dry-run "$dry_run" --yes
+      - name: Publish summary
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p artifacts/ruleset-sync
+          if ! find artifacts/ruleset-sync -name '*report.md' -print -quit | grep -q .; then
+            echo 'FAILED: setup or execution ended before a report was produced. Inspect job logs.' > artifacts/ruleset-sync/setup-report.md
+          fi
+          find artifacts/ruleset-sync -name '*report.md' -exec cat {} \; >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload report and snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ruleset-sync-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/ruleset-sync/
+          if-no-files-found: error

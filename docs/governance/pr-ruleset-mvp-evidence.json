@@ -1,0 +1,39 @@
+[
+  {
+    "operation": "PATCH repos/k-apps-io/ruleset-mvp-test-24/git/refs/heads/main",
+    "exit": 1,
+    "response": "{\"message\":\"Repository rule violations found\\n\\nChanges must be made through a pull request.\\n\\n\",\"documentation_url\":\"https://docs.github.com/rest/git/refs#update-a-reference\",\"status\":\"422\"}",
+    "stderr": "gh: Repository rule violations found\n\nChanges must be made through a pull request.\n\n (HTTP 422)\n"
+  },
+  {
+    "operation": "DELETE repos/k-apps-io/ruleset-mvp-test-24/git/refs/heads/deletion-probe",
+    "exit": 1,
+    "response": "{\"message\":\"Repository rule violations found\\n\\nCannot delete this branch\\n\\n\",\"documentation_url\":\"https://docs.github.com/rest/git/refs#delete-a-reference\",\"status\":\"422\"}",
+    "stderr": "gh: Repository rule violations found\n\nCannot delete this branch\n\n (HTTP 422)\n"
+  },
+  {
+    "operation": "self-authored PR squash merge without approvals",
+    "result": {
+      "sha": "a05d6334ed8b07c76929138ff7316f16b4cbebb6",
+      "merged": true,
+      "message": "Pull Request successfully merged"
+    },
+    "pr": "https://github.com/k-apps-io/ruleset-mvp-test-24/pull/1"
+  },
+  {
+    "operation": "PATCH repos/k-apps-io/ruleset-mvp-test-24/git/refs/heads/main",
+    "exit": 1,
+    "response": "{\"message\":\"Repository rule violations found\\n\\nCannot force-push to this branch\\n\\nChanges must be made through a pull request.\\n\\n\",\"documentation_url\":\"https://docs.github.com/rest/git/refs#update-a-reference\",\"status\":\"422\"}",
+    "stderr": "gh: Repository rule violations found\n\nCannot force-push to this branch\n\nChanges must be made through a pull request.\n\n (HTTP 422)\n"
+  },
+  {
+    "operation": "rollback disabled ruleset permits ref restoration",
+    "success": true
+  },
+  {
+    "operation": "PATCH repos/k-apps-io/ruleset-mvp-test-24/git/refs/heads/main",
+    "exit": 1,
+    "response": "{\"message\":\"Repository rule violations found\\n\\nChanges must be made through a pull request.\\n\\n\",\"documentation_url\":\"https://docs.github.com/rest/git/refs#update-a-reference\",\"status\":\"422\"}",
+    "stderr": "gh: Repository rule violations found\n\nChanges must be made through a pull request.\n\n (HTTP 422)\n"
+  }
+]
