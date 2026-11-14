@@ -92,10 +92,10 @@ Do not mark enforcement verified based only on a successful API write.
 - [x] Activate the ruleset and record its ID and apply artifact.
 - [x] Verify effective rules include PR, deletion, and non-fast-forward protections on both branches.
 - [ ] Verify an ordinary contributor's direct push is rejected.
-- [ ] Verify force push and branch deletion are rejected using an approved disposable test setup. Do not test potentially destructive operations against live `main` without a recovery plan.
-- [ ] Verify a legitimate PR authored by @imnotakopp merges with zero approvals.
+- [x] Verify force push and branch deletion are rejected using the approved disposable test setup.
+- [x] Verify a legitimate PR authored by @imnotakopp merges with zero approvals in the disposable test repository.
 - [x] Run apply again and confirm zero updates.
-- [ ] Verify rollback and restoration in the approved test setup.
+- [x] Verify rollback and restoration in the approved test setup.
 - [ ] Record evidence and remaining limitations in the implementation PR.
 
 Bypass-path testing is not applicable: no bypass actors exist. Automation must use PRs; existing auto-merge behavior should be checked during the pilot. Destructive tests and new test repositories require an explicitly selected disposable setup. Until the checklist is complete, this is prepared enforcement, not a completed rollout.
@@ -116,4 +116,23 @@ GitHub initially added `required_reviewers: []` and `require_extra_approval_for_
 
 Local artifacts are under `artifacts/ruleset-mvp-preflight`, `artifacts/ruleset-mvp-activation`, `artifacts/ruleset-mvp-explicit-defaults`, and `artifacts/ruleset-mvp-idempotence` (git-ignored). The initial snapshot was null because no managed ruleset existed. These local artifacts are not uploaded by this operation.
 
-Live push rejection, author-PR merge, and rollback exercises remain unperformed. The dedicated Actions secret must still be provisioned; local CLI authorization does not provision an Actions credential. The workflow must be merged before scheduled drift reporting is operational.
+Behavioral verification was subsequently completed in the disposable setup below. Ordinary-contributor identity testing remains unperformed; tests used the administrator identity without bypass. The dedicated Actions secret must still be provisioned; local CLI authorization does not provision an Actions credential. The workflow must be merged before scheduled drift reporting is operational.
+
+## Disposable behavioral verification
+
+On November 14, 2026, the owner authorized temporary private repository `k-apps-io/ruleset-mvp-test-24` and temporary organization ruleset `27263343`. The test policy copied the active MVP with targeting changed only for the disposable repository. Tests used authenticated identity `imnotakopp` (administrator), not a separate ordinary-contributor identity.
+
+| Test | Result |
+| --- | --- |
+| Direct fast-forward ref update | HTTP 422: changes must be made through a pull request |
+| Protected branch deletion | HTTP 422: cannot delete this branch |
+| Self-authored PR, no approvals | PR #1 squash-merged successfully |
+| Forced rewind | HTTP 422: cannot force-push; changes must use a PR |
+| Disable test ruleset | Ref restoration succeeded |
+| Restore active test ruleset | Direct update rejected again |
+
+Default-branch deletion is independently rejected by GitHub. To isolate the ruleset's deletion restriction, the test temporarily added an exact `refs/heads/deletion-probe` target and verified the ruleset violation there, then restored default-branch-only targeting. Live pilot branches were not mutated by these tests.
+
+The temporary organization ruleset was deleted after testing. Test-repository deletion was attempted but rejected because the local OAuth token lacks `delete_repo`. The owner must delete `k-apps-io/ruleset-mvp-test-24` through repository Settings, or grant that CLI scope for cleanup. No additional scope was requested automatically.
+
+The sanitized API evidence is committed in [the behavioral verification record](pr-ruleset-mvp-evidence.json). This verification does not establish broad organization coverage or automatic coverage for newly named repositories.
